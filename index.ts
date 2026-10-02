@@ -1,5 +1,6 @@
 import { MarketCache, PoolCache } from './cache';
 import { Listeners } from './listeners';
+import { getEntryData } from './listeners/entry';
 import { Connection, KeyedAccountInfo, Keypair } from '@solana/web3.js';
 import { LIQUIDITY_STATE_LAYOUT_V4, MARKET_STATE_LAYOUT_V3, Token, TokenAmount } from '@raydium-io/raydium-sdk';
 import { AccountLayout, getAssociatedTokenAddressSync } from '@solana/spl-token';
@@ -136,7 +137,8 @@ function printDetails(wallet: Keypair, quoteToken: Token, bot: Bot) {
 const runListener = async () => {
   logger.level = LOG_LEVEL;
   logger.info('Bot is starting...');
-
+  
+  const entryData = getEntryData();
   const marketCache = new MarketCache(connection);
   const poolCache = new PoolCache();
   let txExecutor: TransactionExecutor;
@@ -160,6 +162,7 @@ const runListener = async () => {
   const quoteToken = getToken(QUOTE_MINT);
   const botConfig = <BotConfig>{
     wallet,
+    entryData: entryData,
     quoteAta: getAssociatedTokenAddressSync(quoteToken.mint, wallet.publicKey),
     checkRenounced: CHECK_IF_MINT_IS_RENOUNCED,
     checkFreezable: CHECK_IF_FREEZABLE,
