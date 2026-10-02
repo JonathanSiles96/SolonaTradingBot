@@ -4,7 +4,7 @@
   "homepage": "https://warp.id",
   "version": "3.0.0",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "node api.js && ts-node index.ts",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
